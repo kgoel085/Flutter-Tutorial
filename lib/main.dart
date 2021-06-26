@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './question.dart';
+import './answer.dart';
 
 class MyApp extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
-  void _answerQuestion () {
+  void _answerQuestion() {
     setState(() {
       _questionIndex = _questionIndex + 1;
     });
@@ -21,49 +22,38 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var questions = [
-      'What\s your fav. color ?',
-      'What\s your fav. animal ?'
+    const questions = [
+      {
+        'question': 'What\s your fav. color ?',
+        'answers': ['Black', 'Red', 'Green', 'White']
+      },
+      {
+        'question': 'What\s your fav. animal ?',
+        'answers': ['Cat', 'Dog', 'Tiger', 'Leopard']
+      },
+      {
+        'question': 'Who is your fav. ding Dong ?',
+        'answers': ['LOL', 'lol', 'LMAO', 'HAHAHHAHAHHA']
+      },
     ];
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('My First app'),
-        ),
-        body: Column(children: 
-          <Widget>[
-            Question(
-              questions[_questionIndex]
-            ),
-            ElevatedButton(
-              child: Text('Answer 1'), 
-              onPressed: _answerQuestion,
-            ),
-            ElevatedButton(
-              child: Text('Answer 2'),
-              onPressed:  () {
-                print('Answer 2 choosen');
-              }
-            ),
-            ElevatedButton(
-              child: Text('Answer 3'),
-              onPressed:  () {
-                print('Answer 3 choosen');
-              }
-            ),
-            ElevatedButton(
-              child: Text('Answer 4'),
-              onPressed:  () {
-                print('Answer 4 choosen');
-              }
-            ),
-          ],
-        ),
-      )
-    );
+        home: Scaffold(
+      appBar: AppBar(
+        title: Text('My First app'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Question(questions[_questionIndex]['question']),
+          ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) {
+            return Answer(_answerQuestion, answer);
+          }).toList()
+        ],
+      ),
+    ));
   }
 }
 
-void main () {
+void main() {
   runApp(MyApp());
 }
