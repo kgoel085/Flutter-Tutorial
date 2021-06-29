@@ -35,7 +35,7 @@ class Result extends StatelessWidget {
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.blue),
                 foregroundColor: MaterialStateProperty.all(Colors.white)),
-          )
+          ),
         ],
       ),
     );
