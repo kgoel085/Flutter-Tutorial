@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
       title: appSettings['appName'],
       home: MyHomePage(),
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        accentColor: Colors.amberAccent,
-      ),
+          primarySwatch: Colors.green,
+          accentColor: Colors.amberAccent,
+          fontFamily: 'Quicksand'),
     );
   }
 }
