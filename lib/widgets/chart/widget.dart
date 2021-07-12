@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_basics/widgets/chart/bar.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_basics/widgets/transactions/model.dart';
 
@@ -36,16 +37,35 @@ class ChartWidget extends StatelessWidget {
     });
   }
 
+  double get maxSpending {
+    return groupTransactionValues.fold(0.0, (sum, tx) {
+      return sum + tx['amount'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print(groupTransactionValues);
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupTransactionValues.map((data) {
-          return Text('${data['day']} : ${data['amount'].toString()}');
-        }).toList(),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: groupTransactionValues.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: data['day'],
+                spendingAmount: data['amount'],
+                spendingPctOfTotal: (maxSpending > 0)
+                    ? (data['amount'] as double) / maxSpending
+                    : 0.0,
+              ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
