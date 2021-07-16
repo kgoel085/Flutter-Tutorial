@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basics/widgets/chart/widget.dart';
-import 'package:intl/intl.dart';
 import './widgets/transactions/list.dart';
 import './widgets/transactions/text_fields.dart';
 import './widgets/transactions/model.dart';
