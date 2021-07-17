@@ -34,7 +34,7 @@ class ChartWidget extends StatelessWidget {
 
       print(returnMap);
       return returnMap;
-    });
+    }).reversed.toList();
   }
 
   double get maxSpending {
