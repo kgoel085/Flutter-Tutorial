@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_basics/widgets/chart/widget.dart';
+import 'package:intl/intl.dart';
 import './widgets/transactions/list.dart';
 import './widgets/transactions/text_fields.dart';
 import './widgets/transactions/model.dart';
@@ -59,12 +60,12 @@ class _MyHomePageState extends State<MyHomePage> {
         .toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(String txTitle, double txAmount, DateTime dateTime) {
     final tx = Transaction(
       id: DateTime.now().toString(),
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: dateTime,
     );
 
     setState(() {
@@ -85,6 +86,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    if (id.isEmpty) return;
+
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             ChartWidget(recentTransactions: _recentTransactions),
-            TransactionList(userTransactions: _userTransactions),
+            TransactionList(
+              userTransactions: _userTransactions,
+              deleteTransaction: _deleteTransaction,
+            ),
           ],
         ),
       ),
