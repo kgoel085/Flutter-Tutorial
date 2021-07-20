@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_basics/widgets/chart/widget.dart';
-import 'package:intl/intl.dart';
 import './widgets/transactions/list.dart';
 import './widgets/transactions/text_fields.dart';
 import './widgets/transactions/model.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //   [
+  //     DeviceOrientation.portraitDown,
+  //     DeviceOrientation.portraitUp,
+  //   ],
+  // );
+  runApp(MyApp());
+}
 
 const Map<String, String> appSettings = {'appName': 'Personal Expenses'};
 
@@ -52,6 +61,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [];
 
+  bool _showChart = false;
+
   List<Transaction> get _recentTransactions {
     return _userTransactions
         .where(
@@ -96,26 +107,60 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: Text(appSettings['appName']),
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => _startAddNewTraction(context),
+          icon: Icon(Icons.add),
+        ),
+      ],
+    );
+
+    double actualHeight(double height) {
+      return (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          height;
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appSettings['appName']),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _startAddNewTraction(context),
-            icon: Icon(Icons.add),
-          ),
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            ChartWidget(recentTransactions: _recentTransactions),
-            TransactionList(
-              userTransactions: _userTransactions,
-              deleteTransaction: _deleteTransaction,
+            Container(
+              height: actualHeight(0.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Show chart'),
+                  Switch(
+                    activeColor: Theme.of(context).accentColor,
+                    value: _showChart,
+                    onChanged: (val) {
+                      setState(() {
+                        _showChart = val;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
+            _showChart
+                ? Container(
+                    height: actualHeight(0.3),
+                    child: ChartWidget(recentTransactions: _recentTransactions),
+                  )
+                : Container(
+                    height: actualHeight(0.9),
+                    child: TransactionList(
+                      userTransactions: _userTransactions,
+                      deleteTransaction: _deleteTransaction,
+                    ),
+                  ),
           ],
         ),
       ),
