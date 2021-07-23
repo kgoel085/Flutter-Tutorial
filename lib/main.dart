@@ -107,6 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: Text(appSettings['appName']),
       actions: <Widget>[
@@ -124,6 +127,14 @@ class _MyHomePageState extends State<MyHomePage> {
           height;
     }
 
+    final TransactionListWIdget = Container(
+      height: actualHeight(0.7),
+      child: TransactionList(
+        userTransactions: _userTransactions,
+        deleteTransaction: _deleteTransaction,
+      ),
+    );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -131,9 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              height: actualHeight(0.1),
-              child: Row(
+            if (isLandscape)
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Show chart'),
@@ -148,19 +158,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            ),
-            _showChart
-                ? Container(
-                    height: actualHeight(0.3),
-                    child: ChartWidget(recentTransactions: _recentTransactions),
-                  )
-                : Container(
-                    height: actualHeight(0.9),
-                    child: TransactionList(
-                      userTransactions: _userTransactions,
-                      deleteTransaction: _deleteTransaction,
-                    ),
-                  ),
+            if (!isLandscape)
+              Container(
+                height: actualHeight((isLandscape) ? 0.7 : 0.3),
+                child: ChartWidget(recentTransactions: _recentTransactions),
+              ),
+            if (!isLandscape) TransactionListWIdget,
+            if (isLandscape)
+              _showChart
+                  ? Container(
+                      height: actualHeight(0.7),
+                      child:
+                          ChartWidget(recentTransactions: _recentTransactions),
+                    )
+                  : TransactionListWIdget,
           ],
         ),
       ),
