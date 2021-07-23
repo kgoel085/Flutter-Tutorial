@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_basics/widgets/common/adaptive_button.dart';
 import 'package:intl/intl.dart';
 
 class TransactionTextFields extends StatefulWidget {
@@ -87,17 +89,10 @@ class _TransactionTextFieldsState extends State<TransactionTextFields> {
                             : 'Picked date: ${DateFormat.yMd().format(_selectedDateTime)}',
                       ),
                     ),
-                    TextButton(
-                      onPressed: _presentDatePicker,
-                      child: Text(
-                        'Choose date',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor,
-                      )),
-                    )
+                    AdaptiveTextButton(
+                      pressHandler: _presentDatePicker,
+                      text: 'Choose Date',
+                    ),
                   ],
                 ),
               ),
