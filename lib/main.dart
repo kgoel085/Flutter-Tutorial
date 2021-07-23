@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final mediaQry = MediaQuery.of(context);
     final bool isLandscape = mediaQry.orientation == Orientation.landscape;
 
-    final ObstructingPreferredSizeWidget appBar = (Platform.isIOS)
+    final PreferredSizeWidget appBar = (Platform.isIOS)
         ? CupertinoNavigationBar(
             middle: Text(appSettings['appName']),
             trailing: Row(
