@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _startAddNewTraction(BuildContext ctx) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: ctx,
       builder: (_) {
         return GestureDetector(
